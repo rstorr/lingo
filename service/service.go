@@ -12,6 +12,7 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/codelingo/lingo/app/util"
 	"github.com/codelingo/lingo/app/util/common/config"
@@ -19,6 +20,7 @@ import (
 	"github.com/juju/errors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/keepalive"
 )
 
 const (
@@ -113,7 +115,9 @@ func GrpcConnection(client, server string, insecureAllowed bool) (*grpc.ClientCo
 }
 
 func dial(target string, cert *x509.Certificate, insecureAllowed bool) (*grpc.ClientConn, error) {
-	tlsOpt := grpc.WithInsecure()
+	// are we always insecure??
+	//	tlsOpt := grpc.WithInsecure()
+	var tlsOpt grpc.DialOption
 	if cert != nil {
 		creds, err := credsFromCert(cert)
 		if err != nil {
@@ -128,11 +132,14 @@ func dial(target string, cert *x509.Certificate, insecureAllowed bool) (*grpc.Cl
 		}
 	}
 
-	util.Logger.Debug("dialing grpc server...")
+	util.Logger.Debug("dialing the dank grpc server...")
 	return grpc.Dial(target, tlsOpt, grpc.WithDefaultCallOptions(
 		grpc.MaxCallRecvMsgSize(MaxGrpcMessageSize),
 		grpc.MaxCallSendMsgSize(MaxGrpcMessageSize),
-	))
+	), grpc.WithKeepaliveParams(keepalive.ClientParameters{
+		Time:    15 * time.Second,
+		Timeout: 30 * time.Second,
+	}))
 }
 
 func newCert(host string) (*x509.Certificate, error) {
