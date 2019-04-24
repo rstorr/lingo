@@ -291,12 +291,12 @@
   revision = "57fdcb988a5c543893cc61bce354a6e24ab70022"
 
 [[projects]]
-  digest = "1:fb291433add68d18a4df7a01364a74b45d378996a1bbb2cecc1f2222656a0505"
+  digest = "1:e26c759de83ce6fe27f99082458a7ad9fcc51a95215b4f5bbacd1345b61bc6ba"
   name = "github.com/mholt/archiver"
   packages = ["."]
   pruneopts = ""
-  revision = "de0d89e255e17c8d75a40122055763e743ab0593"
-  version = "v2.1"
+  revision = "d572b2e8b82726cee9476d1b9d63a7fe9b601ff1"
+  version = "v3.1.1"
 
 [[projects]]
   branch = "master"
@@ -406,6 +406,14 @@
   pruneopts = ""
   revision = "0c6b41e72360850ca4f98dc341fd999726ea007f"
   version = "v0.5.4"
+
+[[projects]]
+  branch = "master"
+  digest = "1:5d5ea0c53c32b0465b910eb1d98b045c2f14c416880c54dd5356a1c6b4569041"
+  name = "github.com/xi2/xz"
+  packages = ["."]
+  pruneopts = ""
+  revision = "48954b6210f8d154cb5f8484d3a3e1f83489309e"
 
 [[projects]]
   digest = "1:6e8d05f4da3ff913adf807cb34623811f764b4924369f65c3ab9db744e8fe6ad"
@@ -645,6 +653,7 @@
     "golang.org/x/net/context",
     "google.golang.org/grpc",
     "google.golang.org/grpc/credentials",
+    "google.golang.org/grpc/keepalive",
     "google.golang.org/grpc/metadata",
     "gopkg.in/check.v1",
     "gopkg.in/fatih/color.v1",

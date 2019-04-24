@@ -98,20 +98,16 @@ func extractCMD(dir, archiveName string) error {
 
 	var ext string
 	if runtime.GOOS == "windows" {
-
 		ext = ".exe"
-		err := (*archiver.Zip).Open(dir, ".")
-		if err != nil {
+		z := archiver.NewZip()
+		if err := z.Unarchive(dir+"/"+archiveName, dir); err != nil {
 			return errors.Trace(err)
 		}
-
 	} else {
-
-		err := (*archiver.TarGz).Open(dir+"/"+archiveName, dir)
-		if err != nil {
+		z := archiver.NewTarGz()
+		if err := z.Unarchive(dir+"/"+archiveName, dir); err != nil {
 			return errors.Trace(err)
 		}
-
 	}
 
 	return errors.Trace(os.Chmod(dir+"/cmd"+ext, 0755))
