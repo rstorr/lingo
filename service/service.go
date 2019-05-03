@@ -12,6 +12,7 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/codelingo/lingo/app/util"
 	"github.com/codelingo/lingo/app/util/common/config"
@@ -19,6 +20,7 @@ import (
 	"github.com/juju/errors"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/keepalive"
 )
 
 const (
@@ -129,10 +131,19 @@ func dial(target string, cert *x509.Certificate, insecureAllowed bool) (*grpc.Cl
 	}
 
 	util.Logger.Debug("dialing grpc server...")
-	return grpc.Dial(target, tlsOpt, grpc.WithDefaultCallOptions(
-		grpc.MaxCallRecvMsgSize(MaxGrpcMessageSize),
-		grpc.MaxCallSendMsgSize(MaxGrpcMessageSize),
-	))
+	return grpc.Dial(
+		target,
+		tlsOpt,
+		grpc.WithDefaultCallOptions(
+			grpc.MaxCallRecvMsgSize(MaxGrpcMessageSize),
+			grpc.MaxCallSendMsgSize(MaxGrpcMessageSize),
+		),
+		grpc.WithKeepaliveParams(keepalive.ClientParameters{
+			Time:                2 * time.Minute,
+			Timeout:             3 * time.Minute,
+			PermitWithoutStream: true,
+		}),
+	)
 }
 
 func newCert(host string) (*x509.Certificate, error) {
