@@ -6,7 +6,6 @@ import (
 	"crypto/x509"
 	"fmt"
 	"io/ioutil"
-	"math"
 	"os"
 	"os/user"
 	"path"
@@ -31,7 +30,7 @@ const (
 	LocalClient    = "localclient"
 
 	// Can be increased to 4 << 30 (4GB) on 64 bit systems.
-	MaxGrpcMessageSize = math.MaxInt32
+	MaxGrpcMessageSize = 4 << 30
 )
 
 // GrpcConnection creates a connection between a given server and client type.
